@@ -51,12 +51,13 @@ def dfs(node, prev_node, prev_dir, mst, floor_plan, max_height, size, ramp_prob)
     if possible_ramp and random.random() < ramp_prob:
         # Check the direction of the ramp
         direction = random.choice(list(possible_ramp))
-        if prev_height == max_height:
+        ramp_up = (direction == prev_dir)
+        if ramp_up and prev_height == max_height:
             ramp_up = False
-        elif prev_height == 0:
+            direction = opposite_direction(direction)
+        elif not ramp_up and prev_height == 0:
             ramp_up = True
-        else:
-            ramp_up = (direction == prev_dir)
+            direction = opposite_direction(direction)
 
         if ramp_up:
             # Ramp goes up, keep same height
@@ -159,8 +160,8 @@ def can_move_to(tile1, tile2, direction):
         ramp1_height = int(tile1[1])
         ramp2_height = int(tile2[1])
 
-        # both ramps are in the direction the tiles are from one another
-        if tile1[0] == direction or tile2[0] == direction:
+        # they could be facing each other if ramp 1 is at least facing the other tile
+        if tile1[0] == direction or tile1[0] == opposite_direction(direction):
 
             # If both ramps are facing each other
             if tile1[0] == opposite_direction(tile2[0]):
@@ -169,9 +170,9 @@ def can_move_to(tile1, tile2, direction):
 
             # If both ramps are facing the same direction
             elif tile1[0] == tile2[0] == direction:
-                return ramp1_height == ramp2_height + 1
-            elif tile1[0] == tile2[0] == opposite_direction(direction):
                 return ramp1_height == ramp2_height - 1
+            elif tile1[0] == tile2[0] == opposite_direction(direction):
+                return ramp1_height == ramp2_height + 1
 
         # only way sideways ramps can be pathable from one to the next is, if they are identical
         elif tile1 == tile2:
@@ -339,12 +340,12 @@ def print_floor_plan(floor_plan):
         print()
 
 
-s = 5
-max_h = 3
-num_o = 3
-num_h = 2
-num_p = 1
-ramp_p = 0.9
+s = 20
+max_h = 9
+num_o = 20
+num_h = 6
+num_p = 4
+ramp_p = 1
 
 fp = generate_floor_plan(s, max_h, num_h, num_o, num_p, ramp_p)
 print_floor_plan(fp)
