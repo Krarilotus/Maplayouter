@@ -25,6 +25,7 @@ then traversing this graph with a depth first search and adding ramps and ground
 Current Limitation for height: 9 (as its handled by single character currently!)
 
 An Example map could look like this:
+```
 G5 G5 O5 G5 G5 E5 E6 G7 G7 G7 G7 G7 G7 E7 G8 E8 W8 E8 G9 G5 G5 P5 G4 G3 G2 G2 G2 G1 E1 G2 
 G5 G5 G5 G5 G5 G5 G5 G7 G7 G7 G7 G7 G7 G8 G8 G8 G5 G5 G5 G5 G5 G5 N3 G3 G3 G2 G2 G2 G2 G2 
 O5 G5 G5 G5 O5 G5 G5 G7 G7 G7 G7 G7 G8 G8 G8 G8 G8 G5 G5 G5 G5 G3 G3 G3 G3 G2 G2 G2 N1 G2 
@@ -55,3 +56,4 @@ G2 G2 G2 G2 G2 G4 G4 G4 G4 G4 G4 G6 W5 G5 G6 W5 G5 G5 G5 N6 G7 G7 G7 G7 G6 G6 G5
 G1 G2 G2 G2 G2 G1 O1 N3 G4 N3 S4 G6 W5 G5 G5 G5 G5 G5 E5 G6 G6 N6 G7 G5 N5 G5 G5 G5 W4 G4 
 S1 G2 W1 G1 G1 G1 G1 G3 G3 G3 G5 G5 G6 S5 G5 G5 G5 G5 G5 G6 G6 G6 W5 O5 G5 G5 G5 N4 G4 G4 
 G2 G2 G2 G1 G1 G1 G1 G3 E3 G4 G5 G5 G6 G6 G5 G5 W4 E4 G5 G6 G6 G6 W5 E5 G6 G5 G5 G4 G4 G4 
+```
