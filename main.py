@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import networkx as nx
+import math
 
 # We want to create a dungeon floor plan
 # N, S, W, E stand for directions, left top is lowest index being north west
@@ -15,6 +16,7 @@ import networkx as nx
 # - H - stands for Hole
 # - O stands for Obstacle
 # - P stands for Powerup
+# - F stands for Player First Spawn locations
 # The second char of each tile represents the height level. Holes can only be on height level 0
 
 # All tiles shall be connected, and tiles are connected if they follow the rules of being just pathable from
@@ -156,7 +158,8 @@ def can_move_to(tile1, tile2, direction):
             return False
 
     # If only case left: both tiles are ramps!
-    if 'N' in tile1 or 'S' in tile1 or 'W' in tile1 or 'E' in tile1 and 'N' in tile2 or 'S' in tile2 or 'W' in tile2 or 'E' in tile2:
+    if 'N' in tile1 or 'S' in tile1 or 'W' in tile1 or 'E' in tile1 and 'N' in tile2 or\
+            'S' in tile2 or 'W' in tile2 or 'E' in tile2:
         ramp1_height = int(tile1[1])
         ramp2_height = int(tile2[1])
 
@@ -323,12 +326,39 @@ def add_holes(floor_plan, num_holes, size):
                     holes_added -= 1  # decrease mirrored hole count
 
 
-def generate_floor_plan(size, max_height, num_holes, num_obstacles, num_power_up, ramp_prob):
+def add_player_spawns(floor_plan: object, num_spawns: int, max_side_size: int) -> None:
+    spawns_added = 0
+    size = floor_plan.shape[0]
+
+    # Define the triangular area for spawn points
+    spawn_area = min(max_side_size, size)
+
+    while spawns_added < num_spawns:
+        x = np.random.randint(spawn_area)
+        y = size - 1 - np.random.randint(spawn_area)
+
+        # Make sure that the selected location is within the defined triangle
+        if x + (size-1-y) > max_side_size-1:
+            continue
+
+        tile = floor_plan[x, y]
+        if 'G' in tile:
+            height = tile[1]
+            floor_plan[x, y] = f'F{height}'
+
+            # Mirroring the spawn point
+            floor_plan[y, x] = f'F{height}'
+
+            spawns_added += 1
+
+
+def generate_floor_plan(size, max_height, num_holes, num_obstacles, num_power_up, ramp_prob, num_players_per_team):
     floor_plan = initialize_floor_plan(size, max_height, ramp_prob)
 
     add_holes(floor_plan, num_holes, size)
     add_obstacles(floor_plan, num_obstacles, size)
     add_power_ups(floor_plan, num_power_up, size)
+    add_player_spawns(floor_plan, num_players_per_team, math.ceil(size/2))
 
     return floor_plan
 
@@ -340,12 +370,12 @@ def print_floor_plan(floor_plan):
         print()
 
 
-s = 20
+s = 30
 max_h = 9
 num_o = 20
 num_h = 6
 num_p = 4
 ramp_p = 1
 
-fp = generate_floor_plan(s, max_h, num_h, num_o, num_p, ramp_p)
+fp = generate_floor_plan(s, max_h, num_h, num_o, num_p, ramp_p, 1)
 print_floor_plan(fp)
