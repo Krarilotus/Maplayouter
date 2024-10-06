@@ -1,4 +1,12 @@
 # Maplayouter
+
+## Requirements:
+
+Python 3.10 or above
+Packages: networkx and numpy
+
+## What's it about?
+
 Creating generic map layouts for grid based maps to train AI FPS agents
 
 We want to create a dungeon floor plan
